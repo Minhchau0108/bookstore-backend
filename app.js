@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -21,6 +22,7 @@ const usersRouter = require("./routes/users");
 const authorsRouter = require("./routes/authors");
 const booksRouter = require("./routes/books");
 const genresRouter = require("./routes/genres");
+const authRouter = require("./routes/auth");
 
 const app = express();
 
@@ -32,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/auth", authRouter);
 app.use("/authors", authorsRouter);
 app.use("/books", booksRouter);
 app.use("/genres", genresRouter);

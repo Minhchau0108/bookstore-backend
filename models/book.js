@@ -31,6 +31,11 @@ const bookSchema = new mongoose.Schema({
       ref: "Genre",
     },
   ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+
+    ref: "User",
+  },
 });
 
 const Book = mongoose.model("Book", bookSchema);

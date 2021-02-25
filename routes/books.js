@@ -1,12 +1,16 @@
-var express = require("express");
+const express = require("express");
 
-var router = express.Router();
+const router = express.Router();
 
 const booksController = require("../controllers/books.controller");
 
-router.post("/", booksController.createBook);
+const { loginRequired } = require("../middlewares/authentication");
+
+router.post("/", loginRequired, booksController.createBook);
 
 router.get("/", booksController.getBooks);
+
+router.get("/own", loginRequired, booksController.getMyBooks);
 
 router.get("/:id", booksController.getSingleBook);
 

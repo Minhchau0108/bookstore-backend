@@ -4,7 +4,13 @@ const createBook = async (req, res) => {
   try {
     const { title, description, author, genres } = req.body;
 
-    const book = new Book({ title, description, author, genres });
+    const book = new Book({
+      title,
+      description,
+      author,
+      genres,
+      owner: req.userId,
+    });
 
     await book.save();
 
@@ -20,7 +26,6 @@ const createBook = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       success: false,
-
       error: err.message,
     });
   }
@@ -103,10 +108,32 @@ const deleteBook = async (req, res) => {
     });
   }
 };
+const getMyBooks = async (req, res) => {
+  try {
+    const books = await Book.find({ owner: req.userId })
+      .populate("author")
+      .populate("genres", "-_id -__v");
+
+    res.status(200).json({
+      success: true,
+
+      data: books,
+
+      message: `${books.length} books found!`,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+
+      error: err.message,
+    });
+  }
+};
 module.exports = {
   createBook,
   getBooks,
   getSingleBook,
   updateBook,
   deleteBook,
+  getMyBooks,
 };

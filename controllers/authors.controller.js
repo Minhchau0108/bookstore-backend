@@ -69,10 +69,26 @@ const getAuthors = async (req, res) => {
     });
   }
 };
+const getSingleAuthor = async (req, res) => {
+  try {
+    const author = await Author.findById(req.params.id).populate("books");
+
+    res.status(200).json({
+      success: true,
+      data: author,
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
 
 module.exports = {
   createAuthor,
   updateAuthor,
   deleteAuthor,
   getAuthors,
+  getSingleAuthor,
 };
